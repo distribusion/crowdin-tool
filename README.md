@@ -22,16 +22,27 @@ Or install it yourself as:
 ## Usage
 
 From your git topic branch that needs to be added to the Crowdin translation platform call
-```translation init```
+
+```
+translation init
+```
 
 This will execute the crowdin-cli commands to initialize a new translation version branch with your current git branch name, and upload the keys and initialize the locales.
 
-Calling
-```translation upload```
-will synchronize the translations in the Crowdin version branch with your working repo.
+Use
+
+```
+translation upload
+```
+
+to synchronize the translations in the Crowdin version branch with your working repo.
 
 Finally calling
-```translation download```
+
+```
+translation download
+```
+
 will export translations from the Crowdin version branch to your local repo.
 
 
