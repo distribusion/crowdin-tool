@@ -1,6 +1,7 @@
 module Crowdin
   module Tool
     class CommandHandler
+      require 'popen4'
 
       def initialize(command)
         @tasks = []
@@ -19,7 +20,15 @@ module Crowdin
       end
 
       def execute
-        `#{expand_tasks}` unless @tasks.empty?
+        expanded_tasks.each do |cmd|
+          puts "Running #{cmd}"
+          POpen4::popen4(cmd) do |std_out, std_err, std_in, pid|
+            # STDOUT
+            puts std_out.read.strip
+            # ERRORS
+            puts std_err.read.strip
+          end
+        end
       end
 
       def add_command_tasks(command)
@@ -28,10 +37,10 @@ module Crowdin
         end
       end
 
-      def expand_tasks
+      def expanded_tasks
         @tasks.map do |task|
           [ 'bundle exec', CLI_COMMAND, task, task_branch_argument ].compact.join(' ')
-        end.join(' && ')
+        end
       end
 
       def task_branch_argument
