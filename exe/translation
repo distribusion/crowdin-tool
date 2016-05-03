@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
 require "crowdin/tool"
+
+Crowdin::Tool::CommandHandler.new(ARGV[0]).execute

@@ -1,8 +1,7 @@
 # Crowdin::Tool
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/crowdin/tool`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Crowdin-Tool provides a command line tool that implements convenient git branch conventions for crowdin-cli commands. It helps by aligning your
+crowdin branch names with the current git branch name, and operating on the master translation branch when on the master branch.
 
 ## Installation
 
@@ -22,7 +21,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+From your git topic branch that needs to be added to the Crowdin translation platform call
+```translation init```
+
+This will execute the crowdin-cli commands to initialize a new translation version branch with your current git branch name, and upload the keys and initialize the locales.
+
+Calling
+```translation upload```
+will synchronize the translations in the Crowdin version branch with your working repo.
+
+Finally calling
+```translation download```
+will export translations from the Crowdin version branch to your local repo.
+
 
 ## Development
 
