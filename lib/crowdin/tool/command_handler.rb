@@ -5,7 +5,9 @@ module Crowdin
 
       def initialize(command)
         @tasks = []
-        add_command_tasks(command)
+        ConfigurationManager.run_setup_tasks(command)
+        ConfigurationManager.configure_crowdin
+        add_cli_command_tasks(command)
         if @tasks.empty?
           puts "Usage:"
           puts "translate [command]"
@@ -31,7 +33,7 @@ module Crowdin
         end
       end
 
-      def add_command_tasks(command)
+      def add_cli_command_tasks(command)
         (COMMANDS[command] || []).each do |task|
           @tasks << task
         end
@@ -42,6 +44,7 @@ module Crowdin
           [ 'bundle exec', CLI_COMMAND, task, task_branch_argument ].compact.join(' ')
         end
       end
+
 
       def task_branch_argument
         if current_branch == 'master'

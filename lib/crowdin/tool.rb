@@ -1,5 +1,6 @@
 require "crowdin/tool/version"
 require "crowdin/tool/command_handler"
+require "crowdin/tool/configuration_manager"
 
 module Crowdin
   module Tool
@@ -7,16 +8,18 @@ module Crowdin
     CLI_COMMAND = 'crowdin-cli'
 
     COMMANDS = {
-        'init' => [ 'upload sources', 'upload translations' ],
+        'create' => [ 'upload sources', 'upload translations' ],
         'upload' => [ 'upload translations' ],
         'download' => [ 'download' ]
     }
 
-    COMMAND_DESC = {
-        'init' => 'sets up the localization branch and uploads translations',
+    CLI_COMMAND_DESC = {
+        'create' => 'sets up the localization branch and uploads translations',
         'upload' => 'uploads translations',
         'download' => 'downloads translations'
     }
+
+    COMMAND_DESC = CLI_COMMAND_DESC.merge(ConfigurationManager.setup_task_descriptions)
 
   end
 end
