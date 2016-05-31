@@ -16,7 +16,7 @@ module Crowdin
       end
 
       def self.run_setup_tasks(commands)
-        (setup_commands & [commands].flatten).each do |task|
+        (self.setup_commands & [commands].flatten).each do |task|
           self.send(task)
         end
       end

@@ -1,14 +1,14 @@
 module Crowdin
   module Tool
     class CommandHandler
-      require 'popen4'
+      require 'childprocess'
 
       def initialize(command)
         @tasks = []
-        ConfigurationManager.run_setup_tasks(command)
+        setup_tasks = ConfigurationManager.run_setup_tasks(command)
         ConfigurationManager.configure_crowdin
         add_cli_command_tasks(command)
-        if @tasks.empty?
+        if @tasks.empty? && (setup_tasks.nil? || setup_tasks.empty?)
           puts "Usage:"
           puts "translate [command]"
           puts "\nCommands:"
@@ -24,11 +24,15 @@ module Crowdin
       def execute
         expanded_tasks.each do |cmd|
           puts "Running #{cmd}"
-          POpen4::popen4(cmd) do |std_out, std_err, std_in, pid|
-            # STDOUT
-            puts std_out.read.strip
-            # ERRORS
-            puts std_err.read.strip
+          task_proc = ChildProcess.build('bundle', 'exec', cmd).tap do |process|
+            process.io.stdout = process.io.stderr = STDOUT
+            process.cwd = Dir.pwd
+          end.start
+          until task_proc.exited? do
+            begin
+              task_proc.poll_for_exit(1)
+            rescue ChildProcess::TimeoutError
+            end
           end
         end
       end
@@ -41,7 +45,7 @@ module Crowdin
 
       def expanded_tasks
         @tasks.map do |task|
-          [ 'bundle exec', CLI_COMMAND, task, task_branch_argument ].compact.join(' ')
+          [ CLI_COMMAND, task, task_branch_argument ].compact.join(' ')
         end
       end
 
