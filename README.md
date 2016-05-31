@@ -21,10 +21,36 @@ Or install it yourself as:
 
 ## Usage
 
+Ensure you have a crowdin configuration file `crowdin_default.yaml` in your project's directory that resembles this setup:
+
+```
+project_identifier: <your project id on crowdin>'
+api_key: ''<credentials to be found in project settings page on crowdin>''
+base_path: 'can be anything'
+
+files:
+  -
+    source: '/config/locales/en/models.en.yml'                    #source files filter
+    translation: '/config/locales/%two_letters_code%/models.%two_letters_code%.yml' #where translations live
+  -
+    source: '/config/locales/en/en.yml'                    #source files filter
+    translation: '/config/locales/%two_letters_code%/%two_letters_code%.yml' #where translations live
+  -
+    source: '/config/locales/en/views.en.yml'                    #source files filter
+    translation: '/config/locales/%two_letters_code%/views.%two_letters_code%.yml' #where translations live
+```
+
+Then calling
+```
+translation init
+```
+will initialize the crowdin.yaml for your project with the current base_path.
+
+
 From your git topic branch that needs to be added to the Crowdin translation platform call
 
 ```
-translation init
+translation create
 ```
 
 This will execute the crowdin-cli commands to initialize a new translation version branch with your current git branch name, and upload the keys and initialize the locales.
