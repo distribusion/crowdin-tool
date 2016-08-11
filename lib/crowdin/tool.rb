@@ -9,7 +9,7 @@ module Crowdin
 
     COMMANDS = {
         'create' => [ 'upload sources', 'upload translations' ],
-        'upload' => [ 'upload translations' ],
+        'upload' => [ 'upload sources', 'upload translations' ],
         'download' => [ 'download' ]
     }
 
